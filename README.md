@@ -1,40 +1,65 @@
-# Проект 6-го спринта
+# The 6th project
 
-### Описание
-Репозиторий предназначен для сдачи проекта 6-го српинта
+### Description
+The task is to build an analytical storage based on Vertica using Data Vault storage model. Data is kept on Amazon s3 service. Data pipeline should be done with a following sequence (s3 - localhost in Docker Container - Vertica STG - Vertica DDS) and implemented with Apache Airflow.
 
-### Как работать с репозиторием
-1. В вашем GitHub-аккаунте автоматически создастся репозиторий `de-project-sprint-6` после того, как вы привяжете свой GitHub-аккаунт на Платформе.
-2. Скопируйте репозиторий на свой локальный компьютер, в качестве пароля укажите ваш `Access Token` (получить нужно на странице [Personal Access Tokens](https://github.com/settings/tokens)):
+### ETL pipeline
+
+![](pics/project_6.jpg)
+
+### STG layer 
+
+has been developed for storing raw data from the source
+
+![](pics/stg.png)
+
+### DDS layer
+
+has been developed unparse and structure raw data
+
+![](pics/dds.png)
+
+### How to work with the repository
+
+1. Copy the repository to your local machine:
 	* `git clone https://github.com/{{ username }}/de-project-sprint-6.git`
-3. Перейдите в директорию с проектом: 
+2. Change to the project directory: 
 	* `cd de-project-sprint-6`
-4. Выполните проект и сохраните получившийся код в локальном репозитории:
-	* `git add .`
-	* `git commit -m 'my best commit'`
-5. Обновите репозиторий в вашем GutHub-аккаунте:
-	* `git push origin main`
-
-### Структура репозитория
-- `/src/dags`
-
-### Как запустить контейнер
-Запустите локально команду:
+3. Run docker-compose:
 ```
-docker run \
--d \
--p 3000:3000 \
--p 3002:3002 \
--p 15432:5432 \
---mount src=airflow_sp5,target=/opt/airflow \
---mount src=lesson_sp5,target=/lessons \
---mount src=db_sp5,target=/var/lib/postgresql/data \
---name=de-sprint-5-server-local \
-sindb/de-pg-cr-af:latest
+docker-compose up -d
 ```
-
-После того как запустится контейнер, вам будут доступны:
+4. After the container starts, you will have access to:
 - Airflow
 	- `localhost:3000/airflow`
-- БД
-	- `jovyan:jovyan@localhost:15432/de`
+- Database
+	- `vertica connection secured`
+5. Create a virtual environment
+
+`python3 -m venv venv`
+
+6. Activation of the virtual environment:
+
+`source venv/bin/activate`
+
+7. Update pip to latest version:
+
+`pip install --upgrade pip`
+
+8. install vertical python in container
+
+`pip install vertica_python`
+
+9. install vertical hooks in container
+
+`pip install apache-airflow-providers-vertica[common.sql]`
+
+### Repository structure
+- `/src/dags`
+- `/pics/`
+- `/data/`
+
+
+
+
+
